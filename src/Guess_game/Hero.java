@@ -13,7 +13,7 @@ public class Hero {
     public Hero() throws IOException {
         x = 150f;
         y = 300f;
-        speed = 15f;
+        speed = 12f;
         img = ImageIO.read(GameWindow.class.getResourceAsStream("ship64.png"));
     }
 
@@ -22,8 +22,8 @@ public class Hero {
     }
 
     public void update(){
-        y = y;
-        x = x;
-        speed = speed;
+//        y = y;
+//        x = x;
+//        speed = speed;
     }
 }
