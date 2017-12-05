@@ -21,7 +21,7 @@ public class Background {
             if (x < -20){
                 x = 1250;
                 y = (float) Math.random()*650;
-                speed = 3.5f;
+                speed = 3.2f;
             }
         }
     }

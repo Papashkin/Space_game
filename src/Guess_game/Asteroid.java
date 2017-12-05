@@ -13,7 +13,7 @@ public class Asteroid {
     public Asteroid() throws IOException{
         x = (float) Math.random()*1200;
         y = (float) Math.random()*650;
-        speed = 0.5 + Math.random()*2.5;
+        speed = 0.2 + Math.random()*1.8;
         if (img == null) img = ImageIO.read(GameWindow.class.getResourceAsStream("asteroid64.png"));
     }
 
