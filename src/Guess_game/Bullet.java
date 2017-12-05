@@ -8,35 +8,35 @@ public class Bullet {
     boolean active;
     Image img;
     float speed;
-    int x;
-    int y;
+    float x;
+    float y;
 
     public Bullet() throws IOException{
         img = ImageIO.read(GameWindow.class.getResourceAsStream("bullet64x32.png"));
         active = false;
-        speed = 20f;
-        x = 0;
-        y = 0;
+        speed = 8.0f;
+        x = 0f;
+        y = 0f;
     }
 
-    public void render(int x, int y, Graphics g) {
-        if (active) g.drawImage(img,  x+32, y+16, null);
+    public void render(Graphics g) {
+        g.drawImage(img,(int) x,(int) y,null);
     }
 
     public void deactivate(){
         active = false;
     }
 
-    public void activate(int hero_x, int hero_y){
-        x = hero_x;
-        y = hero_y;
+    public void activate(Hero hero){
+        x = hero.x+32f;
+        y = hero.y+16f;
         active = true;
     }
 
-    public void update(){
-        x += speed;
-//        if (x > 1000) {
-//            deactivate();
-//        }
+    public void update() {
+            x += speed;
+            if (x > 10000) {
+                deactivate();
+            }
     }
 }

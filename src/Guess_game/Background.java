@@ -13,7 +13,7 @@ public class Background {
         public Star() {
             x = (float) Math.random()*1200;
             y = (float) Math.random()*650;
-            speed = 3.5f;
+            speed = 2.2f;
         }
 
         public void update() {
@@ -21,7 +21,7 @@ public class Background {
             if (x < -20){
                 x = 1250;
                 y = (float) Math.random()*650;
-                speed = 3.2f;
+                speed = 2.2f;
             }
         }
     }

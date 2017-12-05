@@ -20,7 +20,7 @@ public class GameWindow extends JFrame{
         for (int i = 0; i < asteroid.length; i++) {
             asteroid[i] = new Asteroid();
         }
-        bullets = new Bullet[200];
+        bullets = new Bullet[100];
         for (int i = 0;i <bullets.length;i++){
             bullets[i] = new Bullet();
         }
@@ -35,25 +35,28 @@ public class GameWindow extends JFrame{
                 switch (e.getKeyCode()) {
                     case 87: case 38:    // VK_W or UP
                         hero.y -= hero.speed;
-                        hero.update();
+//                        hero.update();
                         break;
                     case 83: case 40:    // VK_S or DOWN
                         hero.y += hero.speed;
-                        hero.update();
+//                        hero.update();
                         break;
                     case 65: case 37:    // VK_A or LEFT
                         hero.x -= hero.speed;
-                        hero.update();
+//                        hero.update();
                         break;
                     case 68: case 39:   // VK_D or RIGHT
                         hero.x += hero.speed;
-                        hero.update();
+//                        hero.update();
                         break;
                     case 32:            // VK_SPACE
                         for (int i = 0; i < bullets.length; i++){
-                            if (!bullets[i].active) bullets[i].activate(hero.x + 48, hero.y + 32);
+                            if (!bullets[i].active) {
+                                bullets[i].activate(hero);
+                                bullets[i].update();
+                                break;
+                            }
                         }
-                        break;
                 }
             }
         });
@@ -72,18 +75,31 @@ public class GameWindow extends JFrame{
         background.render(g);
         hero.render(hero,g);
         for (int i = 0;i < asteroid.length; i++) asteroid[i].render(asteroid[i],g);
-        for (int i = 0; i < bullets.length ; i++){
-            if (bullets[i].active) bullets[i].render(hero.x, hero.y, g);
+        for (int i = 0;i < bullets.length; i++) {
+            if (bullets[i].active) {
+                bullets[i].render(g);
+            }
         }
         update();
     }
 
     public static void update(){
         background.update();
-        for (int i = 0;i < asteroid.length; i++) asteroid[i].update();
         hero.update();
+        for (int i = 0;i < asteroid.length; i++) {
+            asteroid[i].update();
+        }
         for (int i = 0;i < bullets.length; i++){
-            if (bullets[i].active) bullets[i].update();
+            if (bullets[i].active) {
+                bullets[i].update();
+                for (int j=0; j<asteroid.length;j++){
+                    if (asteroid[j].hitArea.contains((double)bullets[i].x, (double)bullets[i].y)){
+                        asteroid[j].recreate();
+                        bullets[i].deactivate();
+                        break;
+                    }
+                }
+            }
         }
     }
 
