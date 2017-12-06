@@ -12,8 +12,10 @@ public class GameWindow extends JFrame{
     private static Background background;
     private static Hero hero;
     public static Bullet[] bullets;
+    public static int score;
 
     public static void main(String[] args) throws IOException {
+        score = 0;
         background = new Background();
         hero = new Hero();
         asteroid = new Asteroid[8];
@@ -60,6 +62,25 @@ public class GameWindow extends JFrame{
                 }
             }
         });
+        game_window.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mouseClicked(e);
+                if (!hero.state) {
+                    hero.state = true;
+                    for (int i = 0; i < asteroid.length; i++){
+                        asteroid[i].recreate();
+                    }
+                    for (int j = 0; j < bullets.length; j++){
+                        if (bullets[j].active) bullets[j].deactivate();
+                    }
+                    game_window.setTitle(" ");
+                    game_window.repaint();
+                    game_field.repaint();
+                    update();
+                }
+            }
+        });
     }
 
     public static void set_parameters(GameWindow game_window){
@@ -84,10 +105,18 @@ public class GameWindow extends JFrame{
     }
 
     public static void update(){
+        game_window.setTitle("Score: " + score);
         background.update();
         hero.update();
         for (int i = 0;i < asteroid.length; i++) {
             asteroid[i].update();
+            if(asteroid[i].hitArea.contains((double)hero.x, (double)hero.y)){
+                asteroid[i].recreate();
+                hero.determine();
+                game_window.setTitle("Game over! Your score is " + score);
+                score = 0;
+                break;
+            }
         }
         for (int i = 0;i < bullets.length; i++){
             if (bullets[i].active) {
@@ -96,6 +125,7 @@ public class GameWindow extends JFrame{
                     if (asteroid[j].hitArea.contains((double)bullets[i].x, (double)bullets[i].y)){
                         asteroid[j].recreate();
                         bullets[i].deactivate();
+                        score++;
                         break;
                     }
                 }
@@ -107,8 +137,10 @@ public class GameWindow extends JFrame{
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            render(g);
-            repaint();
+            if (hero.state){
+                render(g);
+                repaint();
+            }
         }
     }
 }

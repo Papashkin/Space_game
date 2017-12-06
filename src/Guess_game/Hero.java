@@ -9,12 +9,17 @@ public class Hero {
       float speed;
       int x;
       int y;
+      boolean state = true;
 
     public Hero() throws IOException {
         x = 100;
         y = 400;
         speed = 12f;
         img = ImageIO.read(GameWindow.class.getResourceAsStream("ship64.png"));
+    }
+
+    public void determine(){
+        state = false;
     }
 
     public void render(Hero hero, Graphics g){
