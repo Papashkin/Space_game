@@ -1,5 +1,6 @@
 package Guess_game;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -11,11 +12,13 @@ public class GameWindow extends JFrame{
     private static Asteroid[] asteroid;
     private static Background background;
     private static Hero hero;
-    public static Bullet[] bullets;
-    public static int score;
+    private static Bullet[] bullets;
+    private static int score;
+    private static Image gameOver;
 
     public static void main(String[] args) throws IOException {
         score = 0;
+        gameOver = ImageIO.read(GameWindow.class.getResourceAsStream("game_over.png"));
         background = new Background();
         hero = new Hero();
         asteroid = new Asteroid[8];
@@ -34,53 +37,71 @@ public class GameWindow extends JFrame{
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                switch (e.getKeyCode()) {
-                    case 87: case 38:    // VK_W or UP
-                        hero.y -= hero.speed;
-//                        hero.update();
-                        break;
-                    case 83: case 40:    // VK_S or DOWN
-                        hero.y += hero.speed;
-//                        hero.update();
-                        break;
-                    case 65: case 37:    // VK_A or LEFT
-                        hero.x -= hero.speed;
-//                        hero.update();
-                        break;
-                    case 68: case 39:   // VK_D or RIGHT
-                        hero.x += hero.speed;
-//                        hero.update();
-                        break;
-                    case 32:            // VK_SPACE
-                        for (int i = 0; i < bullets.length; i++){
-                            if (!bullets[i].active) {
-                                bullets[i].activate(hero);
-                                bullets[i].update();
-                                break;
-                            }
-                        }
-                }
+                key_click(e);
+//                switch (e.getKeyCode()) {
+//                    case 87: case 38:    // VK_W or UP
+//                        hero.y -= hero.speed;
+////                        hero.update();
+//                        break;
+//                    case 83: case 40:    // VK_S or DOWN
+//                        hero.y += hero.speed;
+////                        hero.update();
+//                        break;
+//                    case 65: case 37:    // VK_A or LEFT
+//                        hero.x -= hero.speed;
+////                        hero.update();
+//                        break;
+//                    case 68: case 39:   // VK_D or RIGHT
+//                        hero.x += hero.speed;
+////                        hero.update();
+//                        break;
+//                    case 32:            // VK_SPACE
+//                        for (int i = 0; i < bullets.length; i++){
+//                            if (!bullets[i].active) {
+//                                bullets[i].activate(hero);
+//                                bullets[i].update();
+//                                break;
+//                            }
+//                        }
+//                }
             }
         });
         game_window.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mouseClicked(e);
-                if (!hero.state) {
-                    hero.state = true;
-                    for (int i = 0; i < asteroid.length; i++){
-                        asteroid[i].recreate();
-                    }
-                    for (int j = 0; j < bullets.length; j++){
-                        if (bullets[j].active) bullets[j].deactivate();
-                    }
-                    game_window.setTitle(" ");
-                    game_window.repaint();
-                    game_field.repaint();
-                    update();
-                }
+                mouse_click();
             }
         });
+    }
+
+    public static void key_click(KeyEvent e){
+        switch (e.getKeyCode()) {
+            case 87: case 38:    // VK_W or UP
+                hero.y -= hero.speed;
+//                        hero.update();
+                break;
+            case 83: case 40:    // VK_S or DOWN
+                hero.y += hero.speed;
+//                        hero.update();
+                break;
+            case 65: case 37:    // VK_A or LEFT
+                hero.x -= hero.speed;
+//                        hero.update();
+                break;
+            case 68: case 39:   // VK_D or RIGHT
+                hero.x += hero.speed;
+//                        hero.update();
+                break;
+            case 32:            // VK_SPACE
+                for (int i = 0; i < bullets.length; i++){
+                    if (!bullets[i].active) {
+                        bullets[i].activate(hero);
+                        bullets[i].update();
+                        break;
+                    }
+                }
+        }
     }
 
     public static void set_parameters(GameWindow game_window){
@@ -102,6 +123,10 @@ public class GameWindow extends JFrame{
             }
         }
         update();
+    }
+
+    public  static void game_over(){
+
     }
 
     public static void update(){
@@ -133,13 +158,30 @@ public class GameWindow extends JFrame{
         }
     }
 
+    public  static void mouse_click(){
+        if (!hero.state) {
+            hero.state = true;
+            for (int i = 0; i < asteroid.length; i++){
+                asteroid[i].recreate();
+            }
+            for (int j = 0; j < bullets.length; j++){
+                if (bullets[j].active) bullets[j].deactivate();
+            }
+            game_window.setTitle(" ");
+            game_window.repaint();
+            update();
+        }
+    }
+
     private static class GameField extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            render(g);
             if (hero.state){
-                render(g);
                 repaint();
+            } else {
+                g.drawImage(gameOver, game_window.getX() + 100, game_window.getY(), null);
             }
         }
     }
