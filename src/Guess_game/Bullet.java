@@ -35,7 +35,7 @@ public class Bullet {
 
     public void update() {
             x += speed;
-            if (x > 10000) {
+            if (x > 18000) {
                 deactivate();
             }
     }

@@ -1,5 +1,7 @@
 package Guess_game;
 
+import javafx.scene.shape.Circle;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;

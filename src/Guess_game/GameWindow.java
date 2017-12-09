@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameWindow extends JFrame{
 
@@ -13,22 +14,26 @@ public class GameWindow extends JFrame{
     private static Background background;
     private static Hero hero;
     private static Bullet[] bullets;
+    private static int cage;
     private static int score;
     private static Image gameOver;
+    private static Weapon weapon;
 
     public static void main(String[] args) throws IOException {
         score = 0;
         gameOver = ImageIO.read(GameWindow.class.getResourceAsStream("game_over.png"));
         background = new Background();
         hero = new Hero();
+        weapon = new Weapon();
         asteroid = new Asteroid[8];
         for (int i = 0; i < asteroid.length; i++) {
             asteroid[i] = new Asteroid();
         }
-        bullets = new Bullet[100];
+        bullets = new Bullet[70];
         for (int i = 0;i <bullets.length;i++){
             bullets[i] = new Bullet();
         }
+        cage = bullets.length;
         GameField game_field = new GameField();
         game_window = new GameWindow();
         set_parameters(game_window);
@@ -38,32 +43,6 @@ public class GameWindow extends JFrame{
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
                 key_click(e);
-//                switch (e.getKeyCode()) {
-//                    case 87: case 38:    // VK_W or UP
-//                        hero.y -= hero.speed;
-////                        hero.update();
-//                        break;
-//                    case 83: case 40:    // VK_S or DOWN
-//                        hero.y += hero.speed;
-////                        hero.update();
-//                        break;
-//                    case 65: case 37:    // VK_A or LEFT
-//                        hero.x -= hero.speed;
-////                        hero.update();
-//                        break;
-//                    case 68: case 39:   // VK_D or RIGHT
-//                        hero.x += hero.speed;
-////                        hero.update();
-//                        break;
-//                    case 32:            // VK_SPACE
-//                        for (int i = 0; i < bullets.length; i++){
-//                            if (!bullets[i].active) {
-//                                bullets[i].activate(hero);
-//                                bullets[i].update();
-//                                break;
-//                            }
-//                        }
-//                }
             }
         });
         game_window.addMouseListener(new MouseAdapter() {
@@ -95,12 +74,30 @@ public class GameWindow extends JFrame{
                 break;
             case 32:            // VK_SPACE
                 for (int i = 0; i < bullets.length; i++){
-                    if (!bullets[i].active) {
+                    if (!bullets[i].active && cage > 0) {
                         bullets[i].activate(hero);
+                        cage--;
                         bullets[i].update();
                         break;
                     }
                 }
+        }
+    }
+
+    public  static void mouse_click(){
+        if (!hero.state) {
+            hero.state = true;
+            for (int i = 0; i < asteroid.length; i++){
+                asteroid[i].recreate();
+            }
+            for (int j = 0; j < bullets.length; j++){
+                if (bullets[j].active) bullets[j].deactivate();
+            }
+            weapon.recreate();
+            cage = bullets.length;
+            game_window.setTitle(" ");
+            game_window.repaint();
+            update();
         }
     }
 
@@ -122,17 +119,15 @@ public class GameWindow extends JFrame{
                 bullets[i].render(g);
             }
         }
+        if(weapon.active) weapon.render(g);
         update();
     }
 
-    public  static void game_over(){
-
-    }
-
     public static void update(){
-        game_window.setTitle("Score: " + score);
+        game_window.setTitle("Score: " + score + ". Bullets: " + cage);
         background.update();
         hero.update();
+        if (weapon.active)weapon.update();
         for (int i = 0;i < asteroid.length; i++) {
             asteroid[i].update();
             if(asteroid[i].hitArea.contains((double)hero.x, (double)hero.y)){
@@ -156,20 +151,12 @@ public class GameWindow extends JFrame{
                 }
             }
         }
-    }
-
-    public  static void mouse_click(){
-        if (!hero.state) {
-            hero.state = true;
-            for (int i = 0; i < asteroid.length; i++){
-                asteroid[i].recreate();
-            }
-            for (int j = 0; j < bullets.length; j++){
-                if (bullets[j].active) bullets[j].deactivate();
-            }
-            game_window.setTitle(" ");
-            game_window.repaint();
-            update();
+        for (int i = 10; i < 120; i += 20){
+            weapon.activate();
+        }
+        if (weapon.area.contains((double)hero.x, (double)hero.y)){
+            cage += 20;
+            weapon.recreate();
         }
     }
 
@@ -181,7 +168,7 @@ public class GameWindow extends JFrame{
             if (hero.state){
                 repaint();
             } else {
-                g.drawImage(gameOver, game_window.getX() + 100, game_window.getY(), null);
+                g.drawImage(gameOver, game_window.getX() + 200, game_window.getY(), null);
             }
         }
     }
