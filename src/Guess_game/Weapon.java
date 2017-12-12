@@ -14,6 +14,7 @@ public class Weapon {
     Image img;
     Circle area;
     float radius;
+    boolean ready;
 
     public Weapon() throws IOException{
         img = ImageIO.read(GameWindow.class.getResourceAsStream("weapon.png"));
@@ -51,8 +52,8 @@ public class Weapon {
         area.setCenterX((double)x);
         area.setCenterY((double)y);
         area.setRadius((double)radius);
-        if (x < -60) {
-            recreate();
+        if (x < -15) {
+            deactivate();
         }
     }
 }

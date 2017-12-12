@@ -18,12 +18,14 @@ public class GameWindow extends JFrame{
     private static int score;
     private static Image gameOver;
     private static Weapon weapon;
+    private static Bonus bonus;
 
     public static void main(String[] args) throws IOException {
         score = 0;
         gameOver = ImageIO.read(GameWindow.class.getResourceAsStream("game_over.png"));
         background = new Background();
         hero = new Hero();
+        bonus = new Bonus();
         weapon = new Weapon();
         asteroid = new Asteroid[8];
         for (int i = 0; i < asteroid.length; i++) {
@@ -54,7 +56,7 @@ public class GameWindow extends JFrame{
         });
     }
 
-    public static void key_click(KeyEvent e){
+    private static void key_click(KeyEvent e){
         switch (e.getKeyCode()) {
             case 87: case 38:    // VK_W or UP
                 hero.y -= hero.speed;
@@ -84,7 +86,7 @@ public class GameWindow extends JFrame{
         }
     }
 
-    public  static void mouse_click(){
+    private static void mouse_click(){
         if (!hero.state) {
             hero.state = true;
             for (int i = 0; i < asteroid.length; i++){
@@ -101,16 +103,16 @@ public class GameWindow extends JFrame{
         }
     }
 
-    public static void set_parameters(GameWindow game_window){
+    private static void set_parameters(GameWindow game_window){
         game_window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        game_window.setLocation(210, 210);
+        game_window.setLocation(50, 50);
         game_window.setSize(1000,650);
         game_window.setResizable(false);
         game_window.setVisible(true);
         game_window.setFocusable(true);
     }
 
-    public static void render(Graphics g) {
+    private static void render(Graphics g) {
         background.render(g);
         hero.render(hero,g);
         for (int i = 0;i < asteroid.length; i++) asteroid[i].render(asteroid[i],g);
@@ -120,24 +122,31 @@ public class GameWindow extends JFrame{
             }
         }
         if(weapon.active) weapon.render(g);
+        if(bonus.status) bonus.render(g);
         update();
     }
 
-    public static void update(){
+    private static void update(){
         game_window.setTitle("Score: " + score + ". Bullets: " + cage);
         background.update();
+        if(bonus.status)bonus.update();
         hero.update();
-        if (score%20 == 0 && score != 0) {
-            if (!weapon.active){
+        if (score%9 == 0 && score != 0) {
+            do {
                 weapon.recreate();
                 weapon.activate();
-            }
+            } while (!weapon.active);
+//            if ((!weapon.active)){
+//                weapon.recreate();
+//                weapon.activate();
+//            }
         }
         if (weapon.active){
             weapon.update();
-            if (circlesContact(2)){
+            if (circlesContact()){
                 cage += 20;
                 weapon.deactivate();
+                if (!bonus.status) bonus.activate(hero);
             }
         }
         for (int i = 0;i < asteroid.length; i++) {
@@ -165,28 +174,16 @@ public class GameWindow extends JFrame{
         }
     }
 
-    public static boolean circlesContact(int i){
-        boolean status = false;
+    public static boolean circlesContact(){
+        boolean status;
         double distance, distanceX, distanceY;
         double radius_sum;
-        if (i == 1){            // 1 - are Hero and Asteroid have a contact?
-            for (int j = 0; j < asteroid.length; j++){
-                distanceX = Math.pow((double)(hero.x - asteroid[j].x), (double) 2);
-                distanceY = Math.pow((double)(hero.y - asteroid[j].y), (double) 2);
-                distance = distanceX + distanceY;
-                radius_sum = hero.radius + asteroid[j].radius;
-                status = distance < (radius_sum*radius_sum);
-                if (status){
-                    break;
-                }
-            }
-        } else if (i == 2){     // 2 - are Hero and Weapon have a contact?
+         // 2 - are Hero and Weapon have a contact?
             distanceX = Math.pow((double)(hero.x - weapon.x), (double) 2);
             distanceY = Math.pow((double)(hero.y - weapon.y), (double) 2);
             distance = distanceX + distanceY;
             radius_sum = hero.radius + weapon.radius;
             status = distance < (radius_sum*radius_sum);
-        }
         return status;
     }
 
