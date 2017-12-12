@@ -29,7 +29,7 @@ public class GameWindow extends JFrame{
         for (int i = 0; i < asteroid.length; i++) {
             asteroid[i] = new Asteroid();
         }
-        bullets = new Bullet[70];
+        bullets = new Bullet[30];
         for (int i = 0;i <bullets.length;i++){
             bullets[i] = new Bullet();
         }
@@ -127,7 +127,19 @@ public class GameWindow extends JFrame{
         game_window.setTitle("Score: " + score + ". Bullets: " + cage);
         background.update();
         hero.update();
-        if (weapon.active)weapon.update();
+        if (score%20 == 0 && score != 0) {
+            if (!weapon.active){
+                weapon.recreate();
+                weapon.activate();
+            }
+        }
+        if (weapon.active){
+            weapon.update();
+            if (weapon.area.contains((double)hero.x, (double)hero.y)){
+                cage += 20;
+                weapon.deactivate();
+            }
+        }
         for (int i = 0;i < asteroid.length; i++) {
             asteroid[i].update();
             if(asteroid[i].hitArea.contains((double)hero.x, (double)hero.y)){
@@ -150,13 +162,6 @@ public class GameWindow extends JFrame{
                     }
                 }
             }
-        }
-        for (int i = 10; i < 120; i += 20){
-            weapon.activate();
-        }
-        if (weapon.area.contains((double)hero.x, (double)hero.y)){
-            cage += 20;
-            weapon.recreate();
         }
     }
 
