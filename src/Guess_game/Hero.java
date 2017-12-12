@@ -12,11 +12,15 @@ public class Hero {
       int x;
       int y;
       boolean state = true;
+      Circle area;
+      float radius;
 
     public Hero() throws IOException {
         x = 100;
         y = 400;
+        radius = 30;
         speed = 12f;
+        area = new Circle(x, y, radius);
         img = ImageIO.read(GameWindow.class.getResourceAsStream("ship64.png"));
     }
 
@@ -33,5 +37,8 @@ public class Hero {
         if (x > 932) x = 932;
         if (y < -42) y = 600;
         if (y > 600) y = -42;
+        area.setCenterX((double)x);
+        area.setCenterY((double)y);
+        area.setRadius((double)radius);
     }
 }

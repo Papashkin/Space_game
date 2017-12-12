@@ -12,20 +12,23 @@ public class Asteroid {
     float y;
     double speed;
     Circle hitArea;
+    float radius;
 
     public Asteroid() throws IOException{
         x = (float) (1090 + Math.random()*10);
         y = (float) Math.random()*650;
+        radius = 31;
         speed = 0.2 + Math.random()*1.4;
         img = ImageIO.read(GameWindow.class.getResourceAsStream("asteroid64.png"));
-        hitArea = new Circle(x, y, 29);
+        hitArea = new Circle(x, y, radius);
     }
 
     public void recreate(){
         x = (float) 1200;
         y = (float) Math.random()*650;
+        radius = 31;
         speed = 0.1 + Math.random()*1.4;
-        hitArea = new Circle(x, y, 30);
+        hitArea = new Circle(x, y, radius);
     }
 
     public void render(Asteroid asteroid, Graphics g) {
@@ -39,6 +42,6 @@ public class Asteroid {
         }
         hitArea.setCenterX((double)x);
         hitArea.setCenterY((double)y);
-        hitArea.setRadius((double) 30);
+        hitArea.setRadius((double) radius);
     }
 }

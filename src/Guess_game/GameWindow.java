@@ -135,14 +135,14 @@ public class GameWindow extends JFrame{
         }
         if (weapon.active){
             weapon.update();
-            if (weapon.area.contains((double)hero.x, (double)hero.y)){
+            if (circlesContact(2)){
                 cage += 20;
                 weapon.deactivate();
             }
         }
         for (int i = 0;i < asteroid.length; i++) {
             asteroid[i].update();
-            if(asteroid[i].hitArea.contains((double)hero.x, (double)hero.y)){
+            if(asteroid[i].hitArea.contains((double)hero.x+10, (double)hero.y)){
                 asteroid[i].recreate();
                 hero.determine();
                 game_window.setTitle("Game over! Your score is " + score);
@@ -165,6 +165,31 @@ public class GameWindow extends JFrame{
         }
     }
 
+    public static boolean circlesContact(int i){
+        boolean status = false;
+        double distance, distanceX, distanceY;
+        double radius_sum;
+        if (i == 1){            // 1 - are Hero and Asteroid have a contact?
+            for (int j = 0; j < asteroid.length; j++){
+                distanceX = Math.pow((double)(hero.x - asteroid[j].x), (double) 2);
+                distanceY = Math.pow((double)(hero.y - asteroid[j].y), (double) 2);
+                distance = distanceX + distanceY;
+                radius_sum = hero.radius + asteroid[j].radius;
+                status = distance < (radius_sum*radius_sum);
+                if (status){
+                    break;
+                }
+            }
+        } else if (i == 2){     // 2 - are Hero and Weapon have a contact?
+            distanceX = Math.pow((double)(hero.x - weapon.x), (double) 2);
+            distanceY = Math.pow((double)(hero.y - weapon.y), (double) 2);
+            distance = distanceX + distanceY;
+            radius_sum = hero.radius + weapon.radius;
+            status = distance < (radius_sum*radius_sum);
+        }
+        return status;
+    }
+
     private static class GameField extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
@@ -173,7 +198,7 @@ public class GameWindow extends JFrame{
             if (hero.state){
                 repaint();
             } else {
-                g.drawImage(gameOver, game_window.getX() + 200, game_window.getY(), null);
+                g.drawImage(gameOver, game_window.getWidth()/3, game_window.getHeight()/3, null);
             }
         }
     }

@@ -13,12 +13,14 @@ public class Weapon {
     boolean active;
     Image img;
     Circle area;
+    float radius;
 
     public Weapon() throws IOException{
         img = ImageIO.read(GameWindow.class.getResourceAsStream("weapon.png"));
         x = (float) (1200 + Math.random()*10);
         y = (float) (20 + Math.random()*580);
-        area = new Circle(x, y, 24);
+        radius = 16f;
+        area = new Circle(x, y, radius);
         speed = 0.8f;
         active = false;
     }
@@ -34,7 +36,8 @@ public class Weapon {
     public void recreate(){
         x = (float) (1200 + Math.random()*20);
         y = (float) Math.random()*610;
-        area = new Circle(x, y, 24);
+        radius = 16f;
+        area = new Circle(x, y,radius);
         speed = 0.8f;
         active = false;
     }
@@ -47,7 +50,7 @@ public class Weapon {
         x -= speed;
         area.setCenterX((double)x);
         area.setCenterY((double)y);
-        area.setRadius(18);
+        area.setRadius((double)radius);
         if (x < -60) {
             recreate();
         }
