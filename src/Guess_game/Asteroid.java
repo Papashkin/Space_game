@@ -16,7 +16,7 @@ public class Asteroid {
 
     public Asteroid() throws IOException{
         x = (float) (1090 + Math.random()*10);
-        y = (float) Math.random()*650;
+        y = (float) (20+Math.random()*550);
         radius = 31;
         speed = 0.2 + Math.random()*1.4;
         img = ImageIO.read(GameWindow.class.getResourceAsStream("asteroid64.png"));
@@ -25,7 +25,7 @@ public class Asteroid {
 
     public void recreate(){
         x = (float) 1200;
-        y = (float) Math.random()*650;
+        y = (float) (20+Math.random()*550);
         radius = 31;
         speed = 0.1 + Math.random()*1.4;
         hitArea = new Circle(x, y, radius);

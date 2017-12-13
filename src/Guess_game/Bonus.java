@@ -16,7 +16,7 @@ public class Bonus {
     public Bonus() throws IOException{
         x = 0;
         y = 0;
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("bonus32.png"));
+        img = ImageIO.read(GameWindow.class.getResourceAsStream("bonus_new.png"));
         speed = 0f;
         heroSpeed = 0f;
         vision = speed * 6;
@@ -26,9 +26,9 @@ public class Bonus {
     public void activate(Hero hero){
         x = hero.x;
         y = hero.y;
-        heroSpeed = hero.speed/8;
-        speed = 0.7f;
-        vision = speed * 70;
+        heroSpeed = hero.speed/10;
+        speed = 0.1f;
+        vision = speed * 380;
         status=true;
     }
 
