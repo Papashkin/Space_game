@@ -27,7 +27,7 @@ public class Bonus {
         x = hero.x;
         y = hero.y;
         heroSpeed = hero.speed/8;
-        speed = 0.8f;
+        speed = 0.7f;
         vision = speed * 70;
         status=true;
     }

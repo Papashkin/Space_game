@@ -131,7 +131,7 @@ public class GameWindow extends JFrame{
         background.update();
         if(bonus.status)bonus.update();
         hero.update();
-        if (score%9 == 0 && score != 0) {
+        if (score%13 == 0 && score != 0) {
             do {
                 weapon.recreate();
                 weapon.activate();
