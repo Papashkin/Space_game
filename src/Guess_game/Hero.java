@@ -1,9 +1,10 @@
 package Guess_game;
 
 import javafx.scene.shape.Circle;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class Hero {
@@ -19,7 +20,7 @@ public class Hero {
         x = 100;
         y = 400;
         radius = 30;
-        speed = 12f;
+        speed = 13f;
         area = new Circle(x, y, radius);
         img = ImageIO.read(GameWindow.class.getResourceAsStream("ship64.png"));
     }

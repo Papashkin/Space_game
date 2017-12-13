@@ -60,19 +60,15 @@ public class GameWindow extends JFrame{
         switch (e.getKeyCode()) {
             case 87: case 38:    // VK_W or UP
                 hero.y -= hero.speed;
-//                        hero.update();
                 break;
             case 83: case 40:    // VK_S or DOWN
                 hero.y += hero.speed;
-//                        hero.update();
                 break;
             case 65: case 37:    // VK_A or LEFT
                 hero.x -= hero.speed;
-//                        hero.update();
                 break;
             case 68: case 39:   // VK_D or RIGHT
                 hero.x += hero.speed;
-//                        hero.update();
                 break;
             case 32:            // VK_SPACE
                 for (int i = 0; i < bullets.length; i++){
@@ -136,10 +132,6 @@ public class GameWindow extends JFrame{
                 weapon.recreate();
                 weapon.activate();
             } while (!weapon.active);
-//            if ((!weapon.active)){
-//                weapon.recreate();
-//                weapon.activate();
-//            }
         }
         if (weapon.active){
             weapon.update();
@@ -174,7 +166,7 @@ public class GameWindow extends JFrame{
         }
     }
 
-    public static boolean circlesContact(){
+    private static boolean circlesContact(){
         boolean status;
         double distance, distanceX, distanceY;
         double radius_sum;
@@ -187,7 +179,7 @@ public class GameWindow extends JFrame{
         return status;
     }
 
-    private static class GameField extends JPanel {
+    public static class GameField extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
