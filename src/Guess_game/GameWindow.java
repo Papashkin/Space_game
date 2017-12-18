@@ -34,6 +34,13 @@ public class GameWindow extends JFrame{
         if(!recordFile.exists()){
            try {
                recordFile.createNewFile();
+               try {
+                   writeLine = Integer.toString(0);
+                   fileWrite = new BufferedWriter(new FileWriter(recordFile));
+                   fileWrite.write(writeLine);
+                   fileWrite.close();
+               }catch (IOException e){
+               }
            } catch (IOException e){
                System.out.println("Невозможно создать файл!");
            }
@@ -98,6 +105,7 @@ public class GameWindow extends JFrame{
 
     private static void mouse_click(){
         if (!hero.state) {
+            score = 0;
             hero.state = true;
             for (int i = 0; i < asteroid.length; i++){
                 asteroid[i].recreate();
@@ -166,26 +174,21 @@ public class GameWindow extends JFrame{
                     readLine = fileRead.readLine();
                     recordScore = Integer.valueOf(readLine);
                     fileRead.close();
-                } catch (FileNotFoundException e) {
-//                  continue;
-                } catch (IOException e) {
-//                  continue;
+                }catch (IOException e) {
+                    continue;
+                }catch (NumberFormatException e){
+                    continue;
                 }
                 if (score > recordScore) {
-                    System.out.println("NEW RECORD! Old score = " + recordScore + ". New record = " + score);
                     game_window.setTitle("NEW RECORD! Old score = " + recordScore + ". New record = " + score);
                 try {
                     fileWrite = new BufferedWriter(new FileWriter(recordFile));
                     writeLine = Integer.toString(score);
                     fileWrite.write(writeLine);
                     fileWrite.close();
-                } catch (FileNotFoundException e) {
-//                  continue;
                 } catch (IOException e) {
-//                  continue;
                 }
             }
-                score = 0;
                 break;
             }
         }
