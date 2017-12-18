@@ -4,8 +4,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
+import java.io.BufferedReader;
 
 public class GameWindow extends JFrame{
 
@@ -19,11 +19,25 @@ public class GameWindow extends JFrame{
     private static Image gameOver;
     private static Weapon weapon;
     private static Bonus bonus;
+    private static File recordFile;
+    private static int recordScore;
+    private static BufferedReader fileRead;
+    private static BufferedWriter fileWrite;
+    private static String readLine;
+    private static String writeLine;
 
     public static void main(String[] args) throws IOException {
         score = 0;
         gameOver = ImageIO.read(GameWindow.class.getResourceAsStream("game_over.png"));
         background = new Background();
+        recordFile = new File("record.txt");
+        if(!recordFile.exists()){
+           try {
+               recordFile.createNewFile();
+           } catch (IOException e){
+               System.out.println("Невозможно создать файл!");
+           }
+        }
         hero = new Hero();
         bonus = new Bonus();
         weapon = new Weapon();
@@ -143,10 +157,34 @@ public class GameWindow extends JFrame{
         }
         for (int i = 0;i < asteroid.length; i++) {
             asteroid[i].update();
-            if(asteroid[i].hitArea.contains((double)hero.x+10, (double)hero.y)){
+            if (asteroid[i].hitArea.contains((double) hero.x + 10, (double) hero.y)) {
                 asteroid[i].recreate();
                 hero.determine();
                 game_window.setTitle("Game over! Your score is " + score);
+                try {
+                    fileRead = new BufferedReader(new FileReader(recordFile));
+                    readLine = fileRead.readLine();
+                    recordScore = Integer.valueOf(readLine);
+                    fileRead.close();
+                } catch (FileNotFoundException e) {
+//                  continue;
+                } catch (IOException e) {
+//                  continue;
+                }
+                if (score > recordScore) {
+                    System.out.println("NEW RECORD! Old score = " + recordScore + ". New record = " + score);
+                    game_window.setTitle("NEW RECORD! Old score = " + recordScore + ". New record = " + score);
+                try {
+                    fileWrite = new BufferedWriter(new FileWriter(recordFile));
+                    writeLine = Integer.toString(score);
+                    fileWrite.write(writeLine);
+                    fileWrite.close();
+                } catch (FileNotFoundException e) {
+//                  continue;
+                } catch (IOException e) {
+//                  continue;
+                }
+            }
                 score = 0;
                 break;
             }
