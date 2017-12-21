@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class Bullet {
     float y;
 
     public Bullet() throws IOException{
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("bullet64x32.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("bullet64x32.png"));
         active = false;
         speed = 8.0f;
         x = 0f;

@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class Star {
     public Star() throws IOException {
         x = (float) Math.random()*900;
         y = (float) Math.random()*500;
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("star16.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("star16.png"));
     }
 
     public void render(Graphics g) {

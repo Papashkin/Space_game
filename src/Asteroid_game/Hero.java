@@ -1,10 +1,8 @@
-package Guess_game;
+package Asteroid_game;
 
 import javafx.scene.shape.Circle;
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class Hero {
@@ -22,7 +20,7 @@ public class Hero {
         radius = 30;
         speed = 13f;
         area = new Circle(x, y, radius);
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("ship64.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("ship64.png"));
     }
 
     public void determine(){

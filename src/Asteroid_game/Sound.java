@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import java.io.File;
 import java.io.IOException;

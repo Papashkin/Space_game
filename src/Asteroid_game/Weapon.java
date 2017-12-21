@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javafx.scene.shape.Circle;
 
@@ -17,7 +17,7 @@ public class Weapon {
     boolean ready;
 
     public Weapon() throws IOException{
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("weapon.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("weapon.png"));
         x = (float) (1200 + Math.random()*10);
         y = (float) (20 + Math.random()*580);
         radius = 16f;

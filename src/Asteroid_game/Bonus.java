@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class Bonus {
     public Bonus() throws IOException{
         x = 0;
         y = 0;
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("bonus_new.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("bonus_new.png"));
         speed = 0f;
         heroSpeed = 0f;
         vision = speed * 6;

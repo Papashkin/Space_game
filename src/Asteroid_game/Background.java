@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -31,8 +31,8 @@ public class Background {
     Star[] stars;
 
     public Background() throws IOException {
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("bg.png"));
-        img_star = ImageIO.read(GameWindow.class.getResourceAsStream("star16.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("bg.png"));
+        img_star = ImageIO.read(Main.class.getResourceAsStream("star16.png"));
         stars = new Star[100];
         for (int i = 0;i < stars.length; i++){
             stars[i] = new Star();

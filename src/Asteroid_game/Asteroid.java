@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javafx.scene.shape.Circle;
 
@@ -19,7 +19,7 @@ public class Asteroid {
         y = (float) (20+Math.random()*550);
         radius = 31;
         speed = 0.2 + Math.random()*1.4;
-        img = ImageIO.read(GameWindow.class.getResourceAsStream("asteroid64.png"));
+        img = ImageIO.read(Main.class.getResourceAsStream("asteroid64.png"));
         hitArea = new Circle(x, y, radius);
     }
 

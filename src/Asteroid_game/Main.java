@@ -1,4 +1,4 @@
-package Guess_game;
+package Asteroid_game;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -7,9 +7,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.io.BufferedReader;
 
-public class GameWindow extends JFrame{
+public class Main extends JFrame{
 
-    private static GameWindow game_window;
+    private static Main game_window;
     private static Asteroid[] asteroid;
     private static Background background;
     private static Hero hero;
@@ -28,7 +28,7 @@ public class GameWindow extends JFrame{
 
     public static void main(String[] args) throws IOException {
         score = 0;
-        gameOver = ImageIO.read(GameWindow.class.getResourceAsStream("game_over.png"));
+        gameOver = ImageIO.read(Main.class.getResourceAsStream("game_over.png"));
         background = new Background();
         recordFile = new File("record.txt");
         if(!recordFile.exists()){
@@ -58,7 +58,7 @@ public class GameWindow extends JFrame{
         }
         cage = bullets.length;
         GameField game_field = new GameField();
-        game_window = new GameWindow();
+        game_window = new Main();
         set_parameters(game_window);
         game_window.add(game_field);
         game_window.addKeyListener(new KeyAdapter() {
@@ -121,7 +121,7 @@ public class GameWindow extends JFrame{
         }
     }
 
-    private static void set_parameters(GameWindow game_window){
+    private static void set_parameters(Main game_window){
         game_window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         game_window.setLocation(50, 50);
         game_window.setSize(1000,650);
